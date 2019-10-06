@@ -1,4 +1,6 @@
-
+/* by：弦云孤赫——David Yang
+** github - https://github.com/yangyunhe369
+*/
 // 创建储存积分的变量
 var storageScore = 0;
 // 创建储存总分的变量
@@ -79,7 +81,7 @@ class Game {
     // 绘制提示文字
     this.context.font = '32px Microsoft YaHei'
     this.context.fillStyle = '#000'
-    this.context.fillText('你没有接住坤坤的篮球！得分：' + globalScore, 404, 226)
+    this.context.fillText('CXK，你球掉了！得分：' + globalScore, 404, 226)
 	$("#ballspeedset").removeAttr("disabled");
 	// audio.pause();
 	globalScore = 0;
@@ -96,7 +98,7 @@ class Game {
     // 绘制提示文字
     this.context.font = '32px Microsoft YaHei'
     this.context.fillStyle = '#000'
-    this.context.fillText('下一关！', 308, 226)
+    this.context.fillText('CXK，下一关！', 308, 226)
 	// audio.pause();
   }
   // 游戏通关
@@ -111,7 +113,7 @@ class Game {
     // 绘制提示文字
     this.context.font = '32px Microsoft YaHei'
     this.context.fillStyle = '#000'
-    this.context.fillText('通关！总分：' + globalScore, 308, 226)
+    this.context.fillText('CXK，通关！总分：' + globalScore, 308, 226)
 	$("#ballspeedset").removeAttr("disabled");
 	// audio.pause();
 	globalScore = 0;
