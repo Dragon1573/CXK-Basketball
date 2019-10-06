@@ -1,4 +1,3 @@
-
 // 创建储存积分的变量
 var storageScore = 0;
 // 创建储存总分的变量
@@ -79,7 +78,7 @@ class Game {
     // 绘制提示文字
     this.context.font = '32px Microsoft YaHei'
     this.context.fillStyle = '#000'
-    this.context.fillText('得分：' + globalScore, 404, 226)
+    this.context.fillText('CXK，你球掉了！得分：' + globalScore, 404, 226)
 	$("#ballspeedset").removeAttr("disabled");
 	// audio.pause();
 	globalScore = 0;
