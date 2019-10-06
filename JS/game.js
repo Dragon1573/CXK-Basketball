@@ -1,9 +1,4 @@
-/** By: 弦云孤赫 - David Yang
- * GitHub - https://github.com/yangyunhe369
- *
- * Reformatter: ベ断桥烟雨ミ - Dragon1573
- * GitHub - https://github.com/Dragon1573
- */
+
 // 创建储存积分的变量
 var storageScore = 0;
 // 创建储存总分的变量
