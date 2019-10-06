@@ -1,223 +1,223 @@
 
-// ´´½¨´¢´æ»ı·ÖµÄ±äÁ¿
+// åˆ›å»ºå‚¨å­˜ç§¯åˆ†çš„å˜é‡
 var storageScore = 0;
-// ´´½¨´¢´æ×Ü·ÖµÄ±äÁ¿
+// åˆ›å»ºå‚¨å­˜æ€»åˆ†çš„å˜é‡
 var globalScore = 0;
-// ÓÎÏ·Ö÷ÒªÔËĞĞÂß¼­
+// æ¸¸æˆä¸»è¦è¿è¡Œé€»è¾‘
 class Game {
   constructor (main) {
     let g = {
-      main: main,                                                   // ÓÎÏ·Ö÷º¯Êı
-      actions: {},                                                  // ¼ÇÂ¼°´¼ü¶¯×÷
-      keydowns: {},                                                 // ¼ÇÂ¼°´¼ükeycode
-      state: 1,                                                     // ÓÎÏ·×´Ì¬Öµ£¬³õÊ¼Ä¬ÈÏÎª1
-      state_START: 1,                                               // ¿ªÊ¼ÓÎÏ·
-      state_RUNNING: 2,                                             // ÓÎÏ·¿ªÊ¼ÔËĞĞ
-      state_STOP: 3,                                                // ÔİÍ£ÓÎÏ·
-      state_GAMEOVER: 4,                                            // ÓÎÏ·½áÊø
-      state_UPDATE: 5,                                              // ÓÎÏ·Í¨¹Ø
-      canvas: document.getElementById("canvas"),                    // canvasÔªËØ
-      context: document.getElementById("canvas").getContext("2d"),  // canvas»­²¼
-      timer: null,                                                  // ÂÖÑ¯¶¨Ê±Æ÷
-      fps: main.fps,                                                // ¶¯»­Ö¡Êı£¬Ä¬ÈÏ60
+      main: main,                                                   // æ¸¸æˆä¸»å‡½æ•°
+      actions: {},                                                  // è®°å½•æŒ‰é”®åŠ¨ä½œ
+      keydowns: {},                                                 // è®°å½•æŒ‰é”®keycode
+      state: 1,                                                     // æ¸¸æˆçŠ¶æ€å€¼ï¼Œåˆå§‹é»˜è®¤ä¸º1
+      state_START: 1,                                               // å¼€å§‹æ¸¸æˆ
+      state_RUNNING: 2,                                             // æ¸¸æˆå¼€å§‹è¿è¡Œ
+      state_STOP: 3,                                                // æš‚åœæ¸¸æˆ
+      state_GAMEOVER: 4,                                            // æ¸¸æˆç»“æŸ
+      state_UPDATE: 5,                                              // æ¸¸æˆé€šå…³
+      canvas: document.getElementById("canvas"),                    // canvaså…ƒç´ 
+      context: document.getElementById("canvas").getContext("2d"),  // canvasç”»å¸ƒ
+      timer: null,                                                  // è½®è¯¢å®šæ—¶å™¨
+      fps: main.fps,                                                // åŠ¨ç”»å¸§æ•°ï¼Œé»˜è®¤60
     }
     Object.assign(this, g)
   }
-  // »æÖÆÒ³ÃæËùÓĞËØ²Ä
+  // ç»˜åˆ¶é¡µé¢æ‰€æœ‰ç´ æ
   draw (paddle, ball, ballshadow, blockList, score) {
     let g = this
-    // Çå³ı»­²¼
+    // æ¸…é™¤ç”»å¸ƒ
     g.context.clearRect(0, 0, g.canvas.width, g.canvas.height)
-    // »æÖÆ±³¾°Í¼
+    // ç»˜åˆ¶èƒŒæ™¯å›¾
     // g.drawBg()
-    // »æÖÆµ²°å
+    // ç»˜åˆ¶æŒ¡æ¿
     g.drawImage(paddle)
-    // »æÖÆĞ¡Çò
+    // ç»˜åˆ¶å°çƒ
     g.drawImage(ball)
-	// »æÖÆĞ¡ÇòÒõÓ°
+	// ç»˜åˆ¶å°çƒé˜´å½±
     g.drawImage(ballshadow)
-    // »æÖÆ×©¿é
+    // ç»˜åˆ¶ç –å—
     g.drawBlocks(blockList)
-    // »æÖÆ·ÖÊı
+    // ç»˜åˆ¶åˆ†æ•°
     g.drawText(score)
 	window.canvas_g = this
   }
-  // »æÖÆÍ¼Æ¬
+  // ç»˜åˆ¶å›¾ç‰‡
   drawImage (obj) {
     this.context.drawImage(obj.image, obj.x, obj.y)
   }
-  // »æÖÆ±³¾°Í¼
+  // ç»˜åˆ¶èƒŒæ™¯å›¾
   drawBg () {
     let bg = imageFromPath(allImg.background)
     this.context.drawImage(bg, 0, 0, cdiv.clientWidth, cdiv.clientHeight)
   }
-  // »æÖÆËùÓĞ×©¿é
+  // ç»˜åˆ¶æ‰€æœ‰ç –å—
   drawBlocks (list) {
     for (let item of list) {
       this.drawImage(item)
     }
   }
-  // »æÖÆ¼ÆÊı°å
+  // ç»˜åˆ¶è®¡æ•°æ¿
   drawText (obj) {
     this.context.font = '24px Microsoft YaHei'
     this.context.fillStyle = '#000'
-    // »æÖÆ·ÖÊı
+    // ç»˜åˆ¶åˆ†æ•°
     this.context.fillText(obj.text + obj.allScore, obj.x, obj.y)
-    // »æÖÆ¹Ø¿¨
+    // ç»˜åˆ¶å…³å¡
     this.context.fillText(obj.textLv + obj.lv, this.canvas.width - 100, obj.y)
 	storageScore = obj.allScore;
   }
-  // ÓÎÏ·½áÊø
+  // æ¸¸æˆç»“æŸ
   gameOver () {
 	globalScore = globalScore + storageScore;
-    // Çå³ı¶¨Ê±Æ÷
+    // æ¸…é™¤å®šæ—¶å™¨
     clearInterval(this.timer)
-    // Çå³ı»­²¼
+    // æ¸…é™¤ç”»å¸ƒ
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
-    // »æÖÆ±³¾°Í¼
+    // ç»˜åˆ¶èƒŒæ™¯å›¾
     //this.drawBg()
-    // »æÖÆÌáÊ¾ÎÄ×Ö
+    // ç»˜åˆ¶æç¤ºæ–‡å­—
     this.context.font = '32px Microsoft YaHei'
     this.context.fillStyle = '#000'
-    this.context.fillText('ÄãÃ»½Ó×¡öïöïµÄÀºÇò£¡µÃ·Ö£º' + globalScore, 404, 226)
+    this.context.fillText('å¾—åˆ†ï¼š' + globalScore, 404, 226)
 	$("#ballspeedset").removeAttr("disabled");
 	// audio.pause();
 	globalScore = 0;
   }
-  // ÓÎÏ·½ú¼¶
+  // æ¸¸æˆæ™‹çº§
   goodGame () {
 	globalScore = globalScore + storageScore;
-    // Çå³ı¶¨Ê±Æ÷
+    // æ¸…é™¤å®šæ—¶å™¨
     clearInterval(this.timer)
-    // Çå³ı»­²¼
+    // æ¸…é™¤ç”»å¸ƒ
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
-    // »æÖÆ±³¾°Í¼
+    // ç»˜åˆ¶èƒŒæ™¯å›¾
     //this.drawBg()
-    // »æÖÆÌáÊ¾ÎÄ×Ö
+    // ç»˜åˆ¶æç¤ºæ–‡å­—
     this.context.font = '32px Microsoft YaHei'
     this.context.fillStyle = '#000'
-    this.context.fillText('CXK£¬ÏÂÒ»¹Ø£¡', 308, 226)
+    this.context.fillText('CXKï¼Œä¸‹ä¸€å…³ï¼', 308, 226)
 	// audio.pause();
   }
-  // ÓÎÏ·Í¨¹Ø
+  // æ¸¸æˆé€šå…³
   finalGame () {
 	globalScore = globalScore + storageScore;
-    // Çå³ı¶¨Ê±Æ÷
+    // æ¸…é™¤å®šæ—¶å™¨
     clearInterval(this.timer)
-    // Çå³ı»­²¼
+    // æ¸…é™¤ç”»å¸ƒ
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height)
-    // »æÖÆ±³¾°Í¼
+    // ç»˜åˆ¶èƒŒæ™¯å›¾
     //this.drawBg()
-    // »æÖÆÌáÊ¾ÎÄ×Ö
+    // ç»˜åˆ¶æç¤ºæ–‡å­—
     this.context.font = '32px Microsoft YaHei'
     this.context.fillStyle = '#000'
-    this.context.fillText('CXK£¬Í¨¹Ø£¡×Ü·Ö£º' + globalScore, 308, 226)
+    this.context.fillText('CXKï¼Œé€šå…³ï¼æ€»åˆ†ï¼š' + globalScore, 308, 226)
 	$("#ballspeedset").removeAttr("disabled");
 	// audio.pause();
 	globalScore = 0;
   }
-  // ×¢²áÊÂ¼ş
+  // æ³¨å†Œäº‹ä»¶
   registerAction (key, callback) {
     this.actions[key] = callback
   }
-  // Ğ¡ÇòÅö×²×©¿é¼ì²â
+  // å°çƒç¢°æ’ç –å—æ£€æµ‹
   checkBallBlock (g, paddle, ball, blockList, score) {
     let p = paddle, b = ball
-    // Ğ¡ÇòÅö×²µ²°å¼ì²â
+    // å°çƒç¢°æ’æŒ¡æ¿æ£€æµ‹
     if (p.collide(b)) {
-      // µ±Ğ¡ÇòÔË¶¯·½ÏòÇ÷Ïòµ²°åÖĞĞÄÊ±£¬YÖáËÙ¶ÈÈ¡·´£¬·´Ö®Ôò²»±ä
+      // å½“å°çƒè¿åŠ¨æ–¹å‘è¶‹å‘æŒ¡æ¿ä¸­å¿ƒæ—¶ï¼ŒYè½´é€Ÿåº¦å–åï¼Œåä¹‹åˆ™ä¸å˜
       cxk_body = 4;
       if (Math.abs(b.y + b.h/2 - p.y + p.h/2) > Math.abs(b.y + b.h/2 + b.speedY - p.y + p.h/2)) {
         b.speedY *= -1
       } else {
         b.speedY *= 1
       }
-      // ÉèÖÃXÖáËÙ¶È
+      // è®¾ç½®Xè½´é€Ÿåº¦
       b.speedX = p.collideRange(b)
     }
-    // Ğ¡ÇòÅö×²×©¿é¼ì²â
+    // å°çƒç¢°æ’ç –å—æ£€æµ‹
     blockList.forEach(function (item, i, arr) {
-      if (item.collide(b)) { // Ğ¡Çò¡¢×©¿éÒÑÅö×²
-        if (!item.alive) { // ×©¿éÑªÁ¿Îª0Ê±£¬½øĞĞÒÆ³ı
+      if (item.collide(b)) { // å°çƒã€ç –å—å·²ç¢°æ’
+        if (!item.alive) { // ç –å—è¡€é‡ä¸º0æ—¶ï¼Œè¿›è¡Œç§»é™¤
           arr.splice(i, 1)
         }
-        // µ±Ğ¡ÇòÔË¶¯·½ÏòÇ÷Ïò×©¿éÖĞĞÄÊ±£¬ËÙ¶ÈÈ¡·´£¬·´Ö®Ôò²»±ä
+        // å½“å°çƒè¿åŠ¨æ–¹å‘è¶‹å‘ç –å—ä¸­å¿ƒæ—¶ï¼Œé€Ÿåº¦å–åï¼Œåä¹‹åˆ™ä¸å˜
         if ((b.y < item.y && b.speedY < 0) || (b.y > item.y && b.speedY > 0)) {
           if (!item.collideBlockHorn(b)) {
             b.speedY *= -1
-          } else { // µ±Ğ¡Çò×²»÷×©¿éËÄ½ÇÊ±£¬YÖáËÙ¶È²»±ä
+          } else { // å½“å°çƒæ’å‡»ç –å—å››è§’æ—¶ï¼ŒYè½´é€Ÿåº¦ä¸å˜
             b.speedY *= 1
           }
         } else {
           b.speedY *= 1
         }
-        // µ±Ğ¡Çò×²»÷×©¿éËÄ½ÇÊ±£¬XÖáËÙ¶ÈÈ¡·´
+        // å½“å°çƒæ’å‡»ç –å—å››è§’æ—¶ï¼ŒXè½´é€Ÿåº¦å–å
         if (item.collideBlockHorn(b)) {
           b.speedX *= -1
         }
-        // ¼ÆËã·ÖÊı
+        // è®¡ç®—åˆ†æ•°
         score.computeScore()
       }
     })
-    // µ²°åÒÆ¶¯Ê±±ß½ç¼ì²â
-    if (p.x <= 0) { // µ½×ó±ß½çÊ±
+    // æŒ¡æ¿ç§»åŠ¨æ—¶è¾¹ç•Œæ£€æµ‹
+    if (p.x <= 0) { // åˆ°å·¦è¾¹ç•Œæ—¶
       p.isLeftMove = false
     } else {
       p.isLeftMove = true
     }
-    if (p.x >= canvas.clientWidth - p.w) { // µ½ÓÒ±ß½çÊ±
+    if (p.x >= canvas.clientWidth - p.w) { // åˆ°å³è¾¹ç•Œæ—¶
       p.isRightMove = false
     } else {
       p.isRightMove = true
     }
-    // ÒÆ¶¯Ğ¡Çò
+    // ç§»åŠ¨å°çƒ
     b.move(g)
   }
-  // ÉèÖÃÖğÖ¡¶¯»­
+  // è®¾ç½®é€å¸§åŠ¨ç”»
   setTimer (paddle, ball, ballshadow, blockList, score) {
     let g = this
     let main = g.main
     g.timer = setInterval(function () {
-      // actions¼¯ºÏ
+      // actionsé›†åˆ
       let actions = Object.keys(g.actions)
       for (let i = 0; i < actions.length; i++) {
         let key = actions[i]
         if(g.keydowns[key]) {
-          // Èç¹û°´¼ü±»°´ÏÂ£¬µ÷ÓÃ×¢²áµÄaction
+          // å¦‚æœæŒ‰é”®è¢«æŒ‰ä¸‹ï¼Œè°ƒç”¨æ³¨å†Œçš„action
           g.actions[key]()
         }
       }
-      // µ±×©¿éÊıÁ¿Îª0Ê±£¬ÌôÕ½³É¹¦
+      // å½“ç –å—æ•°é‡ä¸º0æ—¶ï¼ŒæŒ‘æˆ˜æˆåŠŸ
       if (blockList.length == 0) {
-        if (main.LV === main.MAXLV) { // ×îºóÒ»¹ØÍ¨¹Ø
-          // Éı¼¶Í¨¹Ø
+        if (main.LV === main.MAXLV) { // æœ€åä¸€å…³é€šå…³
+          // å‡çº§é€šå…³
           g.state = g.state_UPDATE
-          // ÌôÕ½³É¹¦£¬äÖÈ¾Í¨¹Ø³¡¾°
+          // æŒ‘æˆ˜æˆåŠŸï¼Œæ¸²æŸ“é€šå…³åœºæ™¯
           g.finalGame()
-        } else { // ÆäÓà¹Ø¿¨Í¨¹Ø
-          // Éı¼¶Í¨¹Ø
+        } else { // å…¶ä½™å…³å¡é€šå…³
+          // å‡çº§é€šå…³
           g.state = g.state_UPDATE
-          // ÌôÕ½³É¹¦£¬äÖÈ¾ÏÂÒ»¹Ø¿¨³¡¾°
+          // æŒ‘æˆ˜æˆåŠŸï¼Œæ¸²æŸ“ä¸‹ä¸€å…³å¡åœºæ™¯
           g.goodGame()
         }
       }
-      // ÅĞ¶ÏÓÎÏ·ÊÇ·ñ½áÊø
+      // åˆ¤æ–­æ¸¸æˆæ˜¯å¦ç»“æŸ
       if (g.state === g.state_GAMEOVER) {
         g.gameOver()
       }
-      // ÅĞ¶ÏÓÎÏ·¿ªÊ¼Ê±Ö´ĞĞÊÂ¼ş
+      // åˆ¤æ–­æ¸¸æˆå¼€å§‹æ—¶æ‰§è¡Œäº‹ä»¶
       if (g.state === g.state_RUNNING) {
         g.checkBallBlock(g, paddle, ball, blockList, score)
-        // »æÖÆÓÎÏ·ËùÓĞËØ²Ä
+        // ç»˜åˆ¶æ¸¸æˆæ‰€æœ‰ç´ æ
         g.draw(paddle, ball, ballshadow, blockList, score)
       } else if (g.state === g.state_START){
-        // »æÖÆÓÎÏ·ËùÓĞËØ²Ä
+        // ç»˜åˆ¶æ¸¸æˆæ‰€æœ‰ç´ æ
         g.draw(paddle, ball, ballshadow, blockList, score)
       }
     }, 1000/g.fps)
   }
   /**
-   * ³õÊ¼»¯º¯Êı
+   * åˆå§‹åŒ–å‡½æ•°
    */
   init () {
     let g = this,
@@ -226,7 +226,7 @@ class Game {
         ballshadow = g.main.ballshadow,
         blockList = g.main.blockList,
         score = g.main.score
-    // ÉèÖÃ¼üÅÌ°´ÏÂ¼°ËÉ¿ªÏà¹Ø×¢²áº¯Êı
+    // è®¾ç½®é”®ç›˜æŒ‰ä¸‹åŠæ¾å¼€ç›¸å…³æ³¨å†Œå‡½æ•°
     window.addEventListener('keydown', function (event) {
 		if(event.keyCode == 65) {
 			g.keydowns[37] = true;
@@ -253,7 +253,7 @@ class Game {
 			g.keydowns[event.keyCode] = false
 		}
     })
-	// ÉèÖÃÊó±êµã»÷
+	// è®¾ç½®é¼ æ ‡ç‚¹å‡»
     window.addEventListener('mousedown', function (event) {
 		var clientWidth = document.body.clientWidth;
 		if(event.clientX < clientWidth / 2) {
@@ -290,17 +290,17 @@ class Game {
     g.registerAction = function (key, callback) {
       g.actions[key] = callback
     }
-    // ×¢²á×ó·½Ïò¼üÒÆ¶¯ÊÂ¼ş
+    // æ³¨å†Œå·¦æ–¹å‘é”®ç§»åŠ¨äº‹ä»¶
     g.registerAction('37', function(){
-      // ÅĞ¶ÏÓÎÏ·ÊÇ·ñ´¦ÓÚÔËĞĞ½×¶Î
+      // åˆ¤æ–­æ¸¸æˆæ˜¯å¦å¤„äºè¿è¡Œé˜¶æ®µ
       if (g.state === g.state_RUNNING && paddle.isLeftMove) {
 		  move_way = 2;
         paddle.moveLeft()
       }
     })
-    // ×¢²áÓÒ·½Ïò¼üÒÆ¶¯ÊÂ¼ş
+    // æ³¨å†Œå³æ–¹å‘é”®ç§»åŠ¨äº‹ä»¶
     g.registerAction('39', function(){
-      // ÅĞ¶ÏÓÎÏ·ÊÇ·ñ´¦ÓÚÔËĞĞ½×¶Î
+      // åˆ¤æ–­æ¸¸æˆæ˜¯å¦å¤„äºè¿è¡Œé˜¶æ®µ
       if (g.state === g.state_RUNNING && paddle.isRightMove) {
 		  move_way = 1;
         paddle.moveRight()
@@ -311,13 +311,13 @@ class Game {
 		// audio.play();
 		if(g.state !== g.state_UPDATE) {
 			$("#ballspeedset").attr("disabled", "disabled");
-			if (g.state === g.state_GAMEOVER) { // ÓÎÏ·½áÊøÊ±
-				// ¿ªÊ¼ÓÎÏ·
+			if (g.state === g.state_GAMEOVER) { // æ¸¸æˆç»“æŸæ—¶
+				// å¼€å§‹æ¸¸æˆ
 				g.state = g.state_START
-				// ³õÊ¼»¯
+				// åˆå§‹åŒ–
 				g.main.start()
 			} else {
-				// ¿ªÊ¼ÓÎÏ·
+				// å¼€å§‹æ¸¸æˆ
 				ball.fired = true
 				g.state = g.state_RUNNING
 			}
@@ -325,10 +325,10 @@ class Game {
 	}
 	window.nextGame = function() {
 		// audio.play();
-		if (g.state === g.state_UPDATE && g.main.LV !== g.main.MAXLV) { // ½øÈëÏÂÒ»¹Ø
-            // ¿ªÊ¼ÓÎÏ·
+		if (g.state === g.state_UPDATE && g.main.LV !== g.main.MAXLV) { // è¿›å…¥ä¸‹ä¸€å…³
+            // å¼€å§‹æ¸¸æˆ
             g.state = g.state_START
-            // ³õÊ¼»¯ÏÂÒ»¹Ø¿¨
+            // åˆå§‹åŒ–ä¸‹ä¸€å…³å¡
             g.main.start(++g.main.LV)
 			$("#ballspeedset").attr("disabled", "disabled");
         }
@@ -341,19 +341,19 @@ class Game {
 	}
     window.addEventListener('keydown', function (event) {
       switch (event.keyCode) {
-        // ×¢²á»Ø³µ¼ü·¢ÉäÊÂ¼ş
+        // æ³¨å†Œå›è½¦é”®å‘å°„äº‹ä»¶
         case 13 :
 			window.cacheBallSpeed = parseInt($("#ballspeedset").val());
 			// audio.play();
 			if(g.state !== g.state_UPDATE) {
 				$("#ballspeedset").attr("disabled", "disabled");
-				if (g.state === g.state_GAMEOVER) { // ÓÎÏ·½áÊøÊ±
-					// ¿ªÊ¼ÓÎÏ·
+				if (g.state === g.state_GAMEOVER) { // æ¸¸æˆç»“æŸæ—¶
+					// å¼€å§‹æ¸¸æˆ
 					g.state = g.state_START
-					// ³õÊ¼»¯
+					// åˆå§‹åŒ–
 					g.main.start()
 				} else {
-					// ¿ªÊ¼ÓÎÏ·
+					// å¼€å§‹æ¸¸æˆ
 					ball.fired = true
 					g.state = g.state_RUNNING
 				}
@@ -364,26 +364,26 @@ class Game {
 			// audio.play();
 			if(g.state !== g.state_UPDATE) {
 				$("#ballspeedset").attr("disabled", "disabled");
-				if (g.state === g.state_GAMEOVER) { // ÓÎÏ·½áÊøÊ±
-					// ¿ªÊ¼ÓÎÏ·
+				if (g.state === g.state_GAMEOVER) { // æ¸¸æˆç»“æŸæ—¶
+					// å¼€å§‹æ¸¸æˆ
 					g.state = g.state_START
-					// ³õÊ¼»¯
+					// åˆå§‹åŒ–
 					g.main.start()
 				} else {
-					// ¿ªÊ¼ÓÎÏ·
+					// å¼€å§‹æ¸¸æˆ
 					ball.fired = true
 					g.state = g.state_RUNNING
 				}
 			}
 			break
-        // N ¼ü½øÈëÏÂÒ»¹Ø¿¨
+        // N é”®è¿›å…¥ä¸‹ä¸€å…³å¡
         case 78 :
-          // ÓÎÏ·×´Ì¬ÎªÍ¨¹Ø£¬ÇÒ²»Îª×îÖÕ¹Ø¿¨Ê±
+          // æ¸¸æˆçŠ¶æ€ä¸ºé€šå…³ï¼Œä¸”ä¸ä¸ºæœ€ç»ˆå…³å¡æ—¶
 		  // audio.play();
-          if (g.state === g.state_UPDATE && g.main.LV !== g.main.MAXLV) { // ½øÈëÏÂÒ»¹Ø
-            // ¿ªÊ¼ÓÎÏ·
+          if (g.state === g.state_UPDATE && g.main.LV !== g.main.MAXLV) { // è¿›å…¥ä¸‹ä¸€å…³
+            // å¼€å§‹æ¸¸æˆ
             g.state = g.state_START
-            // ³õÊ¼»¯ÏÂÒ»¹Ø¿¨
+            // åˆå§‹åŒ–ä¸‹ä¸€å…³å¡
             g.main.start(++g.main.LV)
 			$("#ballspeedset").attr("disabled", "disabled");
           }
@@ -397,7 +397,7 @@ class Game {
 			  audio.play();
 		  }
 		  break */
-        // P ¼üÔİÍ£ÓÎÏ·ÊÂ¼ş
+        // P é”®æš‚åœæ¸¸æˆäº‹ä»¶
         case 80 :
 		  if(g.state !== g.state_UPDATE && g.state !== g.state_GAMEOVER) {
 			g.state = g.state_STOP
@@ -405,7 +405,7 @@ class Game {
           break
       }
     })
-    // ÉèÖÃÂÖÑ¯¶¨Ê±Æ÷
+    // è®¾ç½®è½®è¯¢å®šæ—¶å™¨
     g.setTimer(paddle, ball, ballshadow, blockList, score)
   }
 }
