@@ -1,9 +1,4 @@
-/** By: 弦云孤赫 - David Yang
- * GitHub - https://github.com/yangyunhe369
- *
- * Reformatter: ベ断桥烟雨ミ - Dragon1573
- * GitHub - https://github.com/Dragon1573
- */
+
 // 游戏主函数
 let _main = {
   LV: 1,                               // 初始关卡
